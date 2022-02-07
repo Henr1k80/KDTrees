@@ -7,7 +7,7 @@ Console.WriteLine("Hello, World!");
 
 int pointMaxValue = 1_000;
 
-int pointCountOnMap = 1000_000;
+int pointCountOnMap = 100_000;
 Console.WriteLine($"Creating a list if {pointCountOnMap} random points");
 var pointsOnMap = new List<Point>(capacity: pointCountOnMap);
 var ran = new Random();

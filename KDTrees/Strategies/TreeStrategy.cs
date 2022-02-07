@@ -11,7 +11,16 @@ namespace KDTrees.Strategies
         private TreeNode _rootNode = null;
         public ClosestPointsAndDistance FindClosestPoints(Point checkPoint)
         {
-            return FindClosesPoint(checkPoint: checkPoint, treeNode: _rootNode, closestSoFar: new ClosestPointsAndDistance(closestPoints: new List<Point>(), distance: double.MaxValue));
+            return FindClosesPoint(checkPoint: checkPoint, treeNode: _rootNode, closestSoFar: new ClosestPointsAndDistance(closestPoints: new HashSet<Point>(), distance: double.MaxValue));
+        }
+
+        private static ClosestPointsAndDistance GetClosestorMergeIfEqualDistance(ClosestPointsAndDistance closestSoFar, ClosestPointsAndDistance challenger){
+            if (closestSoFar.Distance < challenger.Distance)
+                return closestSoFar;
+            if (closestSoFar.Distance > challenger.Distance)
+                return challenger;
+
+            return new ClosestPointsAndDistance(closestPoints: closestSoFar.ClosestPoints.Concat(challenger.ClosestPoints).ToHashSet(), distance: closestSoFar.Distance);
         }
 
         private ClosestPointsAndDistance FindClosesPoint(Point checkPoint, TreeNode treeNode, ClosestPointsAndDistance closestSoFar)
@@ -32,11 +41,11 @@ namespace KDTrees.Strategies
             }
 
             {
-                var distanceToNodePoint = checkPoint.GetDistanceTo(treeNode.MidPoint);
+                var distanceToMidPoint = checkPoint.GetDistanceTo(treeNode.MidPoint);
 
                 // If node point is closer than closest point so far, decreased the max distance value
-                if (distanceToNodePoint < closestSoFar.Distance)
-                    closestSoFar = new ClosestPointsAndDistance(closestPoints: new List<Point>() { treeNode.MidPoint }, distance: distanceToNodePoint);
+                if (distanceToMidPoint <= closestSoFar.Distance)
+                    closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, new ClosestPointsAndDistance(closestPoints: new HashSet<Point>() { treeNode.MidPoint }, distance: distanceToMidPoint));
             }
 
             if (treeNode.SplitOnAxis == Axis.X)
@@ -44,20 +53,17 @@ namespace KDTrees.Strategies
                 if (checkPoint.X <= treeNode.MidPoint.X)
                 {
                     // X less than midPoint X
-                    // TODO: Optimize branch
-                    var closestAmongLess = treeNode.Less != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar) : null;
-                    if (closestAmongLess != null && closestAmongLess.Distance <= closestSoFar.Distance)
+                    if (treeNode.Less != null)
                     {
-                        closestSoFar = closestAmongLess;
+                        closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar));
                     }
 
                     if (checkPoint.X + closestSoFar.Distance >= treeNode.MidPoint.X)
                     {
                         // There is a chance that the closest point os on the greater side
-                        var closestAmongGreater = treeNode.Greater != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar) : null;
-                        if (closestAmongGreater != null && closestAmongGreater.Distance <= closestSoFar.Distance)
+                        if (treeNode.Greater != null)
                         {
-                            closestSoFar = closestAmongGreater;
+                            closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar));
                         }
                     }
                 }
@@ -66,19 +72,17 @@ namespace KDTrees.Strategies
                 {
                     // X greater than midPoint X
                     // TODO: Optimize branch
-                    var closestAmongGreater = treeNode.Greater != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar) : null;
-                    if (closestAmongGreater != null && closestAmongGreater.Distance < closestSoFar.Distance)
+                    if (treeNode.Greater != null)
                     {
-                        closestSoFar = closestAmongGreater;
+                        closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar));
                     }
 
                     if (checkPoint.X - closestSoFar.Distance <= treeNode.MidPoint.X)
                     {
                         // There is a chance that the closest point os on the less side
-                        var closestAmongLess = treeNode.Less != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar) : null;
-                        if (closestAmongLess != null && closestAmongLess.Distance < closestSoFar.Distance)
+                        if (treeNode.Less != null)
                         {
-                            closestSoFar = closestAmongLess;
+                            closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar));
                         }
                     }
                 }
@@ -89,19 +93,17 @@ namespace KDTrees.Strategies
                 {
                     // Y less than midPoint Y
                     // TODO: Optimize branch
-                    var closestAmongLess = treeNode.Less != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar) : null;
-                    if (closestAmongLess != null && closestAmongLess.Distance < closestSoFar.Distance)
+                    if (treeNode.Less != null)
                     {
-                        closestSoFar = closestAmongLess;
+                        closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar));
                     }
 
                     if (checkPoint.Y + closestSoFar.Distance >= treeNode.MidPoint.Y)
                     {
                         // There is a chance that the closest point os on the greater side
-                        var closestAmongGreater = treeNode.Greater != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar) : null;
-                        if (closestAmongGreater != null && closestAmongGreater.Distance < closestSoFar.Distance)
+                        if (treeNode.Greater != null)
                         {
-                            closestSoFar = closestAmongGreater;
+                            closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar));
                         }
                     }
                 }
@@ -110,27 +112,22 @@ namespace KDTrees.Strategies
                 {
                     // Y greater than midPoint Y
                     // TODO: Optimize branch
-                    var closestAmongGreater = treeNode.Greater != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar) : null;
-
-                    if (closestAmongGreater != null && closestAmongGreater.Distance < closestSoFar.Distance)
+                    if (treeNode.Greater != null)
                     {
-                        closestSoFar = closestAmongGreater;
+                        closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar));
                     }
 
                     if (checkPoint.Y - closestSoFar.Distance <= treeNode.MidPoint.Y)
                     {
                         // There is a chance that the closest point os on the less side
-                        var closestAmongLess = treeNode.Less != null ? FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar) : null;
-                        if (closestAmongLess != null && closestAmongLess.Distance < closestSoFar.Distance)
+                        if (treeNode.Less != null)
                         {
-                            closestSoFar = closestAmongLess;
+                            closestSoFar = FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar);
                         }
                     }
                 }
 
             }
-
-
 
             return closestSoFar;
         }

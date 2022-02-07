@@ -23,7 +23,7 @@ namespace KDTrees.Strategies
             return _mapOfPoints.Points
                     .GroupBy(p => p.GetDistanceTo(checkPoint))
                     .OrderBy(group => group.Key)
-                    .Select(group => new ClosestPointsAndDistance(closestPoints: group.ToList(), distance: group.Key))
+                    .Select(group => new ClosestPointsAndDistance(closestPoints: group.ToHashSet(), distance: group.Key))
                     .First();
         }
     }
