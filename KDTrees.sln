@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDTrees", "KDTrees\KDTrees.csproj", "{04F6FE01-C38D-4A3D-BB3D-388E24ECEA57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KDTrees.Test", "KDTrees.Test\KDTrees.Test.csproj", "{FE8A2EB3-AEA3-4025-950A-EB6832D1162E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04F6FE01-C38D-4A3D-BB3D-388E24ECEA57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F6FE01-C38D-4A3D-BB3D-388E24ECEA57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F6FE01-C38D-4A3D-BB3D-388E24ECEA57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F6FE01-C38D-4A3D-BB3D-388E24ECEA57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8A2EB3-AEA3-4025-950A-EB6832D1162E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8A2EB3-AEA3-4025-950A-EB6832D1162E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8A2EB3-AEA3-4025-950A-EB6832D1162E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8A2EB3-AEA3-4025-950A-EB6832D1162E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8158094E-F057-429C-B956-B62C1AD0EE8E}
+	EndGlobalSection
+EndGlobal
