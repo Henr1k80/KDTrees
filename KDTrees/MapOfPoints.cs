@@ -8,10 +8,22 @@ namespace KDTrees
 {
     public class MapOfPoints
     {
-        public IReadOnlyList<Point> Points { get; }
-        public MapOfPoints(IReadOnlyList<Point> points)
+        public HashSet<Point> Points { get; }
+        public MapOfPoints(HashSet<Point> points)
         {
             Points = points;
+        }
+    }
+
+    public class ClosestPointsAndDistance
+    {
+        public List<Point> ClosestPoints { get; set; }
+        public double Distance { get; set; }
+
+        public ClosestPointsAndDistance(List<Point> closestPoints, double distance)
+        {
+            ClosestPoints = closestPoints;
+            Distance = distance;
         }
     }
 
@@ -28,6 +40,8 @@ namespace KDTrees
 
         public double GetDistanceTo(Point p)
         {
+            if (p.X == X && p.Y == Y)
+                return 0;
             return Math.Sqrt((X - p.X) * (X - p.X) + (Y - p.Y) * (Y - p.Y));
         }
     }

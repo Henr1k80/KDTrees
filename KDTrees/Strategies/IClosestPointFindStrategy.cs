@@ -9,6 +9,6 @@ namespace KDTrees
     public interface IClosestPointFindStrategy
     {
         void Init(MapOfPoints mapOfPoints);
-        List<Point> FindClosestPoints(Point point);
+        ClosestPointsAndDistance FindClosestPoints(Point checkPoint);
     }
 }

@@ -11,20 +11,20 @@ namespace KDTrees.Strategies
     /// </summary>
     public class DirtyStrategy : IClosestPointFindStrategy
     {
-        private MapOfPoints _mapOfPoints;
+        private MapOfPoints? _mapOfPoints;
         public void Init(MapOfPoints mapOfPoints)
         {
             // This strategy does not prepare anything as it will loop through all points
             _mapOfPoints = mapOfPoints ?? throw new ArgumentNullException(nameof(mapOfPoints));
         }
 
-        public List<Point> FindClosestPoints(Point point)
+        public ClosestPointsAndDistance FindClosestPoints(Point checkPoint)
         {
             return _mapOfPoints.Points
-                    .GroupBy(p => p.GetDistanceTo(point))
+                    .GroupBy(p => p.GetDistanceTo(checkPoint))
                     .OrderBy(group => group.Key)
-                    .First()
-                    .ToList();
+                    .Select(group => new ClosestPointsAndDistance(closestPoints: group.ToList(), distance: group.Key))
+                    .First();
         }
     }
 }
