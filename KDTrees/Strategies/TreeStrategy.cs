@@ -25,14 +25,9 @@ namespace KDTrees.Strategies
 
         private ClosestPointsAndDistance FindClosesPoint(Point checkPoint, TreeNode treeNode, ClosestPointsAndDistance closestSoFar)
         {
-            if (treeNode is null)
+            if(_rootNode == null)
             {
-                throw new ArgumentNullException(nameof(treeNode));
-            }
-
-            if (closestSoFar is null)
-            {
-                throw new ArgumentNullException(nameof(closestSoFar));
+                throw new InvalidOperationException($"Must call {nameof(BuildIndex)} prior to calling {nameof(FindClosesPoint)}");
             }
 
             {
@@ -87,7 +82,6 @@ namespace KDTrees.Strategies
                 if (checkPoint.Y <= treeNode.MidPoint.Y)
                 {
                     // Y less than midPoint Y
-                    // TODO: Optimize branch
                     if (treeNode.Less != null)
                     {
                         closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Less, closestSoFar: closestSoFar));
@@ -106,7 +100,6 @@ namespace KDTrees.Strategies
                 if (checkPoint.Y >= treeNode.MidPoint.Y)
                 {
                     // Y greater than midPoint Y
-                    // TODO: Optimize branch
                     if (treeNode.Greater != null)
                     {
                         closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, FindClosesPoint(checkPoint: checkPoint, treeNode: treeNode.Greater, closestSoFar: closestSoFar));
