@@ -25,11 +25,6 @@ namespace KDTrees.Strategies
 
         private ClosestPointsAndDistance FindClosesPoint(Point checkPoint, TreeNode treeNode, ClosestPointsAndDistance closestSoFar)
         {
-            if (checkPoint is null)
-            {
-                throw new ArgumentNullException(nameof(checkPoint));
-            }
-
             if (treeNode is null)
             {
                 throw new ArgumentNullException(nameof(treeNode));

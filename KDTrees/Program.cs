@@ -5,10 +5,10 @@ using System.Diagnostics;
 
 Console.WriteLine("Hello, World!");
 
-int pointMaxValue = 1_000;
+int pointMaxValue = 100_000;
 
-int pointCountOnMap = 100_000;
-Console.WriteLine($"Creating a list if {pointCountOnMap} random points");
+int pointCountOnMap = 10_000_000;
+Console.WriteLine($"{DateTime.Now} Creating a list of {pointCountOnMap} random points");
 var pointsOnMap = new List<Point>(capacity: pointCountOnMap);
 var ran = new Random();
 while (pointsOnMap.Count < pointCountOnMap)
@@ -18,23 +18,23 @@ while (pointsOnMap.Count < pointCountOnMap)
 var map = new MapOfPoints(pointsOnMap.ToHashSet());
 
 var pointCountToCheck = 1000;
-Console.WriteLine($"Create a random list of {pointCountOnMap} points to check");
+Console.WriteLine($"{DateTime.Now} Create a random list of {pointCountOnMap} points to check");
 var pointsToCheck = new List<Point>();
 for (var i = 0; i < pointCountToCheck; i++)
 {
     pointsToCheck.Add(new Point(x: ran.Next(-pointMaxValue, pointMaxValue), y: ran.Next(-pointMaxValue, pointMaxValue)));
 }
 
-Console.WriteLine("Initiating all strategies");
+Console.WriteLine($"{DateTime.Now} Initiating all strategies");
 var strategies = new List<IClosestPointFindStrategy>();
-strategies.Add(new DirtyStrategy());
+//strategies.Add(new DirtyStrategy());
 strategies.Add(new TreeStrategy());
 var stopwatch = new Stopwatch();
 foreach (var strategy in strategies)
 {
     stopwatch.Restart();
     strategy.Init(map);
-    Console.WriteLine($"Strategy {strategy.GetType().Name} initiated in {stopwatch.ElapsedMilliseconds}ms");
+    Console.WriteLine($"{DateTime.Now} Strategy {strategy.GetType().Name} initiated in {stopwatch.ElapsedMilliseconds}ms");
 }
 
 // VALIDATE A given strategy compared to the dirty strategy
@@ -51,7 +51,7 @@ foreach (var strategy in strategies)
 //    Console.Write(".");
 //}
 
-Console.WriteLine("Starting comparison");
+Console.WriteLine($"{DateTime.Now} Starting comparison");
 foreach (var strategy in strategies)
 {
     Console.WriteLine($"Testing strategy {strategy.GetType().Name}...");
