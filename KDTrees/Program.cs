@@ -9,13 +9,13 @@ int pointMaxValue = 1_000_000;
 
 int pointCountOnMap = 10_000_000;
 Console.WriteLine($"{DateTime.Now} Creating a list of {pointCountOnMap} random points");
-var pointsOnMap = new List<Point>(capacity: pointCountOnMap);
+var pointsOnMap = new HashSet<Point>(capacity: pointCountOnMap);
 var ran = new Random();
 while (pointsOnMap.Count < pointCountOnMap)
 {
     pointsOnMap.Add(new Point(x: ran.Next(-pointMaxValue, pointMaxValue), y: ran.Next(-pointMaxValue, pointMaxValue)));
 }
-var map = new MapOfPoints(pointsOnMap.ToHashSet());
+var map = new MapOfPoints(pointsOnMap);
 
 var pointCountToCheck = 10_000;
 Console.WriteLine($"{DateTime.Now} Create a random list of {pointCountOnMap} points to check");
