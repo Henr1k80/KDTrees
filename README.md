@@ -1,6 +1,6 @@
 # K-D Trees
 
-This repo was made after an online post I saw about K-D Trees.
+This repo was made after I read an online post about K-D Trees on linkedin.
 
 Program.cs performs a test.
 A random map is created with 10mio points.
