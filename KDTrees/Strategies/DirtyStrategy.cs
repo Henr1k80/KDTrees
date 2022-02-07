@@ -12,7 +12,7 @@ namespace KDTrees.Strategies
     public class DirtyStrategy : IClosestPointFindStrategy
     {
         private MapOfPoints? _mapOfPoints;
-        public void Init(MapOfPoints mapOfPoints)
+        public void BuildIndex(MapOfPoints mapOfPoints)
         {
             // This strategy does not prepare anything as it will loop through all points
             _mapOfPoints = mapOfPoints ?? throw new ArgumentNullException(nameof(mapOfPoints));

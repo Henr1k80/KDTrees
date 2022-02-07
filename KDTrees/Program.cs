@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 Console.WriteLine("Hello, World!");
 
-int pointMaxValue = 100_000;
+int pointMaxValue = 1_000_000;
 
 int pointCountOnMap = 10_000_000;
 Console.WriteLine($"{DateTime.Now} Creating a list of {pointCountOnMap} random points");
@@ -17,7 +17,7 @@ while (pointsOnMap.Count < pointCountOnMap)
 }
 var map = new MapOfPoints(pointsOnMap.ToHashSet());
 
-var pointCountToCheck = 1000;
+var pointCountToCheck = 10_000;
 Console.WriteLine($"{DateTime.Now} Create a random list of {pointCountOnMap} points to check");
 var pointsToCheck = new List<Point>();
 for (var i = 0; i < pointCountToCheck; i++)
@@ -25,7 +25,7 @@ for (var i = 0; i < pointCountToCheck; i++)
     pointsToCheck.Add(new Point(x: ran.Next(-pointMaxValue, pointMaxValue), y: ran.Next(-pointMaxValue, pointMaxValue)));
 }
 
-Console.WriteLine($"{DateTime.Now} Initiating all strategies");
+Console.WriteLine($"{DateTime.Now} Building index");
 var strategies = new List<IClosestPointFindStrategy>();
 //strategies.Add(new DirtyStrategy());
 strategies.Add(new TreeStrategy());
@@ -33,7 +33,7 @@ var stopwatch = new Stopwatch();
 foreach (var strategy in strategies)
 {
     stopwatch.Restart();
-    strategy.Init(map);
+    strategy.BuildIndex(map);
     Console.WriteLine($"{DateTime.Now} Strategy {strategy.GetType().Name} initiated in {stopwatch.ElapsedMilliseconds}ms");
 }
 

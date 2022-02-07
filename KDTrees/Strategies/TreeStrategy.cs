@@ -127,7 +127,7 @@ namespace KDTrees.Strategies
             return closestSoFar;
         }
 
-        public void Init(MapOfPoints mapOfPoints)
+        public void BuildIndex(MapOfPoints mapOfPoints)
         {
             _rootNode = BuildNode(points: mapOfPoints.Points.ToList(), axis: Axis.X);
         }

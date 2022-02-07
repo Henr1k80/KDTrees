@@ -29,10 +29,10 @@ namespace KDTrees
 
     public record struct Point
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public long X { get; set; }
+        public long Y { get; set; }
 
-        public Point(int x, int y)
+        public Point(long x, long y)
         {
             X = x;
             Y = y;
