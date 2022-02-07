@@ -37,30 +37,30 @@ foreach (var strategy in strategies)
     Console.WriteLine($"Strategy {strategy.GetType().Name} initiated in {stopwatch.ElapsedMilliseconds}ms");
 }
 
-Console.WriteLine("Starting to check same value as dirty");
-while(true){
-    var checkPoint = new Point(x: ran.Next(-pointMaxValue, pointMaxValue), y: ran.Next(-pointMaxValue, pointMaxValue));
-    var result1 = strategies[0].FindClosestPoints(checkPoint);
-    var result2 = strategies[1].FindClosestPoints(checkPoint);
-    if (result1.Distance != result2.Distance)
-        throw new Exception("Not the same distance!");
+// VALIDATE A given strategy compared to the dirty strategy
+//Console.WriteLine("Starting to check same value as dirty");
+//while(true){
+//    var checkPoint = new Point(x: ran.Next(-pointMaxValue, pointMaxValue), y: ran.Next(-pointMaxValue, pointMaxValue));
+//    var result1 = strategies[0].FindClosestPoints(checkPoint);
+//    var result2 = strategies[1].FindClosestPoints(checkPoint);
+//    if (result1.Distance != result2.Distance)
+//        throw new Exception("Not the same distance!");
 
-    if (result1.ClosestPoints.Count != result2.ClosestPoints.Count)
-        throw new Exception("Not the same point count!");
-    Console.Write(".");
-}
-
-
-//Console.WriteLine("Starting comparison");
-//foreach (var strategy in strategies)
-//{
-//    Console.WriteLine($"Testing strategy {strategy.GetType().Name}...");
-//    stopwatch.Restart();
-//    foreach (var p in pointsToCheck)
-//    {
-//        strategy.FindClosestPoints(p);
-//    }
-//    Console.WriteLine($"Strategy {strategy.GetType().Name} checked all {pointsToCheck.Count} points in {stopwatch.ElapsedMilliseconds}ms");
+//    if (result1.ClosestPoints.Count != result2.ClosestPoints.Count)
+//        throw new Exception("Not the same point count!");
+//    Console.Write(".");
 //}
+
+Console.WriteLine("Starting comparison");
+foreach (var strategy in strategies)
+{
+    Console.WriteLine($"Testing strategy {strategy.GetType().Name}...");
+    stopwatch.Restart();
+    foreach (var p in pointsToCheck)
+    {
+        strategy.FindClosestPoints(p);
+    }
+    Console.WriteLine($"Strategy {strategy.GetType().Name} checked all {pointsToCheck.Count} points in {stopwatch.ElapsedMilliseconds}ms");
+}
 
 Console.ReadLine();
