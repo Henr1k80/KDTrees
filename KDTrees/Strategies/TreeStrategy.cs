@@ -133,7 +133,7 @@ namespace KDTrees.Strategies
             if (points.Count == 1)
                 return new TreeNode(splitOnAxis: axis, nodePoint: points.Single(), less: null, greater: null);
 
-            var reversedAxis = axis == Axis.X ? Axis.Y : Axis.X;
+            var oppositeAxis = axis == Axis.X ? Axis.Y : Axis.X;
             var ordered = points.OrderBy(p => axis == Axis.X ? p.X : p.Y).ToList();
             var midIndex = (ordered.Count + 1) / 2;
 
@@ -143,8 +143,8 @@ namespace KDTrees.Strategies
             return new TreeNode(
                 splitOnAxis: axis,
                 nodePoint: ordered[midIndex],
-                less: less.Any() ? BuildNode(points: less, axis: reversedAxis) : null,
-                greater: greater.Any() ? BuildNode(points: greater, axis: reversedAxis) : null);
+                less: less.Any() ? BuildNode(points: less, axis: oppositeAxis) : null,
+                greater: greater.Any() ? BuildNode(points: greater, axis: oppositeAxis) : null);
         }
 
         public enum Axis
