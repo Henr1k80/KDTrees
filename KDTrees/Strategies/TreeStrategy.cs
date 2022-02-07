@@ -153,26 +153,28 @@ namespace KDTrees.Strategies
                 less: less.Any() ? BuildNode(points: less, axis: reversedAxis) : null,
                 greater: greater.Any() ? BuildNode(points: greater, axis: reversedAxis) : null);
         }
-    }
 
-    public enum Axis
-    {
-        X, Y
-    }
-
-    public class TreeNode
-    {
-        public Axis SplitOnAxis { get; set; }
-        public Point MidPoint { get; set; }
-        public TreeNode? Less { get; set; }
-        public TreeNode? Greater { get; set; }
-
-        public TreeNode(Axis splitOnAxis, Point nodePoint, TreeNode? less, TreeNode? greater)
+        public enum Axis
         {
-            SplitOnAxis = splitOnAxis;
-            MidPoint = nodePoint;
-            Less = less;
-            Greater = greater;
+            X, Y
+        }
+
+        public class TreeNode
+        {
+            public Axis SplitOnAxis { get; set; }
+            public Point MidPoint { get; set; }
+            public TreeNode? Less { get; set; }
+            public TreeNode? Greater { get; set; }
+
+            public TreeNode(Axis splitOnAxis, Point nodePoint, TreeNode? less, TreeNode? greater)
+            {
+                SplitOnAxis = splitOnAxis;
+                MidPoint = nodePoint;
+                Less = less;
+                Greater = greater;
+            }
         }
     }
+
+    
 }
