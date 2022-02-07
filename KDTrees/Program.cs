@@ -13,6 +13,8 @@ treeStrategy.BuildIndex(map);
 
 // To test if a given strategy works, out-comment the following to test it against the simple and correct, but slow strategy, DirtyStrategy
 // RunStrategyAndCompareWithDirtyToCheckIfErrorsCanBeFound(strategyToTest: treeStrategy, map: map);
+
+
 CheckAllPointsAgainstStrategy(strategyToTest: treeStrategy, pointsToCheck: pointsToCheck);
 
 Console.ReadLine();
