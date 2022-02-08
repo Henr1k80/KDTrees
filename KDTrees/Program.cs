@@ -4,8 +4,9 @@ using KDTrees.Strategies;
 using System.Diagnostics;
 
 Console.WriteLine($"{DateTime.Now} Building map and points to check");
-var map = new MapOfPoints(GenerateRandomUniquePoints(pointCount: 10_000_000));
-var pointsToCheck = GenerateRandomUniquePoints(pointCount: 10_000);
+var storage = new PointStorageService();
+var map = new MapOfPoints(storage.ReadMapPoints().ToArray());
+var pointsToCheck = storage.ReadCheckPoints();
 
 Console.WriteLine($"{DateTime.Now} Building indexes");
 var treeStrategy = new TreeStrategy();
@@ -14,8 +15,7 @@ treeStrategy.BuildIndex(map);
 // To test if a given strategy works, out-comment the following to test it against the simple and correct, but slow strategy, DirtyStrategy
 // RunStrategyAndCompareWithDirtyToCheckIfErrorsCanBeFound(strategyToTest: treeStrategy, map: map);
 
-
-CheckAllPointsAgainstStrategy(strategyToTest: treeStrategy, pointsToCheck: pointsToCheck);
+CheckAllPointsAgainstStrategy(strategyToTest: treeStrategy, pointsToCheck: pointsToCheck.ToHashSet());
 
 Console.ReadLine();
 

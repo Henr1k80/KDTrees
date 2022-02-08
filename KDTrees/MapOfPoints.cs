@@ -8,8 +8,8 @@ namespace KDTrees
 {
     public class MapOfPoints
     {
-        public HashSet<Point> Points { get; }
-        public MapOfPoints(HashSet<Point> points)
+        public Point[] Points { get; }
+        public MapOfPoints(Point[] points)
         {
             Points = points;
         }
