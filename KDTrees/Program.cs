@@ -23,11 +23,13 @@ static void CheckAllPointsAgainstStrategy(IClosestPointFindStrategy strategyToTe
 {
     Console.WriteLine($"{DateTime.Now} Testing strategy {strategyToTest.GetType().Name}...");
     var stopwatch = Stopwatch.StartNew();
+    int counter = 0;
     foreach (var p in pointsToCheck)
     {
-        strategyToTest.FindClosestPoints(p);
+        var clostesPoint = strategyToTest.FindClosestPoints(p);
+        counter++;
     }
-    Console.WriteLine($"{DateTime.Now} Strategy {strategyToTest.GetType().Name} checked all {pointsToCheck.Count} points in {stopwatch.ElapsedMilliseconds}ms");
+    Console.WriteLine($"{DateTime.Now} Strategy {strategyToTest.GetType().Name} checked all {counter} points in {stopwatch.ElapsedMilliseconds}ms");
 
 }
 
