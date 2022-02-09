@@ -31,8 +31,9 @@ namespace KDTrees
                 var line = reader.ReadLine();
                 while(line != null){
                     var mid = line.IndexOf(" ");
-                    var x = int.Parse(line.AsSpan().Slice(0, mid));
-                    var y = int.Parse(line.AsSpan().Slice(mid + 1));
+                    var lineAsSpan = line.AsSpan();
+                    var x = int.Parse(lineAsSpan[..mid]);
+                    var y = int.Parse(lineAsSpan[(mid + 1)..]);
                     yield return new Point(x, y);
                     line = reader.ReadLine();
                 }
