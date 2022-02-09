@@ -3,6 +3,9 @@ namespace KDTrees.Strategies
     public class TreeStrategy : IClosestPointFindStrategy
     {
         private TreeNode _rootNode = null;
+        private static readonly Comparison<Point> SortByX = (p1, p2) => p1.X > p2.X ? 1 : p1.X < p2.X ? -1 : 0;
+        private static readonly Comparison<Point> SortByY = (p1, p2) => p1.Y > p2.Y ? 1 : p1.Y < p2.Y ? -1 : 0;
+
         public ClosestPointsAndDistance FindClosestPoints(Point checkPoint)
         {
             if(_rootNode == null)
@@ -115,30 +118,40 @@ namespace KDTrees.Strategies
 
         public void BuildIndex(MapOfPoints mapOfPoints)
         {
-            var uniquePoints = mapOfPoints.Points.ToHashSet();
-            _rootNode = BuildNode(points: uniquePoints, axis: Axis.X);
+            _rootNode = BuildNode(mapOfPoints.Points, axis: Axis.X);
         }
 
-        private static TreeNode BuildNode(IReadOnlyCollection<Point> points, Axis axis)
+        private static TreeNode BuildNode(Span<Point> points, Axis axis)
         {
-            if (points.Count == 0)
+            if (points.Length == 0)
                 throw new ArgumentException("Empty points");
 
-            if (points.Count == 1)
-                return new TreeNode(splitOnAxis: axis, nodePoint: points.Single(), less: null, greater: null);
+            if (points.Length == 1)
+                return new TreeNode(splitOnAxis: axis, nodePoint: points[0], less: null, greater: null);
 
-            var oppositeAxis = axis == Axis.X ? Axis.Y : Axis.X;
-            var ordered = points.OrderBy(p => axis == Axis.X ? p.X : p.Y).ToList();
-            var midIndex = (ordered.Count + 1) / 2;
-
-            var less = ordered.Take(midIndex).ToList();
-            var greater = ordered.Skip(midIndex + 1).ToList();
+            Comparison<Point> sortBy;
+            Axis oppositeAxis;
+            if (axis == Axis.X)
+            {
+                sortBy = SortByX;
+                oppositeAxis = Axis.Y;
+            }
+            else
+            {
+                sortBy = SortByY;
+                oppositeAxis = Axis.X;
+            }
+            // this is single threaded, so we can reorder parts of the same array and avoid a lot of allocations
+            points.Sort(sortBy);
+            var midIndex = (points.Length + 1) / 2;
+            var less = points[..midIndex];
+            var greater = points[(midIndex + 1)..];
 
             return new TreeNode(
                 splitOnAxis: axis,
-                nodePoint: ordered[midIndex],
-                less: less.Any() ? BuildNode(points: less, axis: oppositeAxis) : null,
-                greater: greater.Any() ? BuildNode(points: greater, axis: oppositeAxis) : null);
+                nodePoint: points[midIndex],
+                less: less.Length > 0 ? BuildNode(points: less, axis: oppositeAxis) : null,
+                greater: greater.Length > 0 ? BuildNode(points: greater, axis: oppositeAxis) : null);
         }
 
         public enum Axis
