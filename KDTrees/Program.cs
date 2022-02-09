@@ -22,15 +22,22 @@ Console.ReadLine();
 static void CheckAllPointsAgainstStrategy(IClosestPointFindStrategy strategyToTest, HashSet<Point> pointsToCheck)
 {
     Console.WriteLine($"{DateTime.Now} Testing strategy {strategyToTest.GetType().Name}...");
-    var stopwatch = Stopwatch.StartNew();
-    int counter = 0;
-    foreach (var p in pointsToCheck)
+    var stopwatch = new Stopwatch();
+    const int timesToRunTest = 10;
+    var results = new long[timesToRunTest];
+    for (int i = 0; i < timesToRunTest; i++)
     {
-        var clostesPoint = strategyToTest.FindClosestPoints(p);
-        counter++;
+        int counter = 0;
+        stopwatch.Restart();
+        foreach (var p in pointsToCheck)
+        {
+            var clostesPoint = strategyToTest.FindClosestPoints(p);
+            counter++;
+        }
+        results[i] = stopwatch.ElapsedMilliseconds;
+        Console.WriteLine($"{DateTime.Now} Strategy {strategyToTest.GetType().Name} checked all {counter} points in {results[i]}ms");
     }
-    Console.WriteLine($"{DateTime.Now} Strategy {strategyToTest.GetType().Name} checked all {counter} points in {stopwatch.ElapsedMilliseconds}ms");
-
+    Console.WriteLine($"{DateTime.Now} Strategy {strategyToTest.GetType().Name} average runtime {results.Average()}ms");
 }
 
 static void RunStrategyAndCompareWithDirtyToCheckIfErrorsCanBeFound(IClosestPointFindStrategy strategyToTest, MapOfPoints map)
