@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace KDTrees
 {
@@ -15,7 +11,7 @@ namespace KDTrees
 
         public IEnumerable<Point> ReadMapPoints()
         {
-            return ReadFromFile(filepath: FilePaths.MapPointsFilePath).ToArray();
+            return ReadFromFile(filepath: FilePaths.MapPointsFilePath);
         }
 
         public void WriteCheckPoints(IEnumerable<Point> points)
@@ -25,10 +21,10 @@ namespace KDTrees
 
         public IEnumerable<Point> ReadCheckPoints()
         {
-            return ReadFromFile(filepath: FilePaths.CheckPointsFilePath).ToArray();
+            return ReadFromFile(filepath: FilePaths.CheckPointsFilePath);
         }
 
-        private IEnumerable<Point> ReadFromFile(string filepath)
+        private static IEnumerable<Point> ReadFromFile(string filepath)
         {
             using (var reader = new StreamReader(filepath))
             {
