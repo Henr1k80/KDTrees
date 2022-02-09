@@ -11,12 +11,14 @@
 
     public class ClosestPointsAndDistance
     {
-        public HashSet<Point> ClosestPoints { get; set; }
+        private readonly IEnumerable<Point> _closestPointsEnumerable;
+        public HashSet<Point> ClosestPoints => new(_closestPointsEnumerable);
+
         public double Distance { get; set; }
 
-        public ClosestPointsAndDistance(HashSet<Point> closestPoints, double distance)
+        public ClosestPointsAndDistance(IEnumerable<Point> closestPoints, double distance)
         {
-            ClosestPoints = closestPoints;
+            _closestPointsEnumerable = closestPoints;
             Distance = distance;
         }
     }

@@ -9,7 +9,7 @@ namespace KDTrees.Strategies
             {
                 throw new InvalidOperationException($"Must call {nameof(BuildIndex)} prior to calling {nameof(FindClosesPoint)}");
             }
-            return FindClosesPoint(checkPoint: checkPoint, treeNode: _rootNode, closestSoFar: new ClosestPointsAndDistance(closestPoints: new HashSet<Point>(), distance: double.MaxValue));
+            return FindClosesPoint(checkPoint: checkPoint, treeNode: _rootNode, closestSoFar: new ClosestPointsAndDistance(closestPoints: ArraySegment<Point>.Empty, distance: double.MaxValue));
         }
 
         private static ClosestPointsAndDistance GetClosestorMergeIfEqualDistance(ClosestPointsAndDistance closestSoFar, ClosestPointsAndDistance challenger){
@@ -18,7 +18,7 @@ namespace KDTrees.Strategies
             if (closestSoFar.Distance > challenger.Distance)
                 return challenger;
 
-            return new ClosestPointsAndDistance(closestPoints: closestSoFar.ClosestPoints.Concat(challenger.ClosestPoints).ToHashSet(), distance: closestSoFar.Distance);
+            return new ClosestPointsAndDistance(closestPoints: closestSoFar.ClosestPoints.Concat(challenger.ClosestPoints), distance: closestSoFar.Distance);
         }
 
         private static ClosestPointsAndDistance FindClosesPoint(Point checkPoint, TreeNode treeNode, ClosestPointsAndDistance closestSoFar)
@@ -28,7 +28,7 @@ namespace KDTrees.Strategies
 
                 // If node point is closer than closest point so far, decreased the max distance value
                 if (distanceToMidPoint <= closestSoFar.Distance)
-                    closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, new ClosestPointsAndDistance(closestPoints: new HashSet<Point>() { treeNode.MidPoint }, distance: distanceToMidPoint));
+                    closestSoFar = GetClosestorMergeIfEqualDistance(closestSoFar, new ClosestPointsAndDistance(closestPoints: new [] { treeNode.MidPoint }, distance: distanceToMidPoint));
             }
 
             if (treeNode.SplitOnAxis == Axis.X)
@@ -115,10 +115,11 @@ namespace KDTrees.Strategies
 
         public void BuildIndex(MapOfPoints mapOfPoints)
         {
-            _rootNode = BuildNode(points: mapOfPoints.Points, axis: Axis.X);
+            var uniquePoints = mapOfPoints.Points.ToHashSet();
+            _rootNode = BuildNode(points: uniquePoints, axis: Axis.X);
         }
 
-        private static TreeNode BuildNode(IReadOnlyList<Point> points, Axis axis)
+        private static TreeNode BuildNode(IReadOnlyCollection<Point> points, Axis axis)
         {
             if (points.Count == 0)
                 throw new ArgumentException("Empty points");
@@ -161,6 +162,4 @@ namespace KDTrees.Strategies
             }
         }
     }
-
-    
 }
