@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace KDTrees.Strategies
 {
     public class TreeStrategy : IClosestPointFindStrategy
@@ -122,10 +116,10 @@ namespace KDTrees.Strategies
 
         public void BuildIndex(MapOfPoints mapOfPoints)
         {
-            _rootNode = BuildNode(points: mapOfPoints.Points.ToList(), axis: Axis.X);
+            _rootNode = BuildNode(points: mapOfPoints.Points, axis: Axis.X);
         }
 
-        private TreeNode BuildNode(IReadOnlyList<Point> points, Axis axis)
+        private static TreeNode BuildNode(IReadOnlyList<Point> points, Axis axis)
         {
             if (points.Count == 0)
                 throw new ArgumentException("Empty points");
