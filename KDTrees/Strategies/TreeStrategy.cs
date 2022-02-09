@@ -5,6 +5,10 @@ namespace KDTrees.Strategies
         private TreeNode _rootNode = null;
         public ClosestPointsAndDistance FindClosestPoints(Point checkPoint)
         {
+            if(_rootNode == null)
+            {
+                throw new InvalidOperationException($"Must call {nameof(BuildIndex)} prior to calling {nameof(FindClosesPoint)}");
+            }
             return FindClosesPoint(checkPoint: checkPoint, treeNode: _rootNode, closestSoFar: new ClosestPointsAndDistance(closestPoints: new HashSet<Point>(), distance: double.MaxValue));
         }
 
@@ -19,11 +23,6 @@ namespace KDTrees.Strategies
 
         private ClosestPointsAndDistance FindClosesPoint(Point checkPoint, TreeNode treeNode, ClosestPointsAndDistance closestSoFar)
         {
-            if(_rootNode == null)
-            {
-                throw new InvalidOperationException($"Must call {nameof(BuildIndex)} prior to calling {nameof(FindClosesPoint)}");
-            }
-
             {
                 var distanceToMidPoint = checkPoint.GetDistanceTo(treeNode.MidPoint);
 
