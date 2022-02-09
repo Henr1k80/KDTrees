@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KDTrees
+﻿namespace KDTrees
 {
     public class MapOfPoints
     {
@@ -27,17 +21,8 @@ namespace KDTrees
         }
     }
 
-    public record struct Point
+    public readonly record struct Point(long X, long Y)
     {
-        public long X { get; set; }
-        public long Y { get; set; }
-
-        public Point(long x, long y)
-        {
-            X = x;
-            Y = y;
-        }
-
         public double GetDistanceTo(Point p)
         {
             if (p.X == X && p.Y == Y)

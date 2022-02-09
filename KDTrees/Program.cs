@@ -60,7 +60,7 @@ static HashSet<Point> GenerateRandomUniquePoints(int pointCount)
     var ran = new Random();
     while (pointsToCheck.Count < pointCount)
     {
-        pointsToCheck.Add(new Point(x: ran.Next(-pointMaxValue, pointMaxValue), y: ran.Next(-pointMaxValue, pointMaxValue)));
+        pointsToCheck.Add(new Point(X: ran.Next(-pointMaxValue, pointMaxValue), Y: ran.Next(-pointMaxValue, pointMaxValue)));
     }
     return pointsToCheck;
 }
