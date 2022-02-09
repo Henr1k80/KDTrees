@@ -21,7 +21,7 @@ namespace KDTrees.Strategies
             return new ClosestPointsAndDistance(closestPoints: closestSoFar.ClosestPoints.Concat(challenger.ClosestPoints).ToHashSet(), distance: closestSoFar.Distance);
         }
 
-        private ClosestPointsAndDistance FindClosesPoint(Point checkPoint, TreeNode treeNode, ClosestPointsAndDistance closestSoFar)
+        private static ClosestPointsAndDistance FindClosesPoint(Point checkPoint, TreeNode treeNode, ClosestPointsAndDistance closestSoFar)
         {
             {
                 var distanceToMidPoint = checkPoint.GetDistanceTo(treeNode.MidPoint);
